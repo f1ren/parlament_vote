@@ -15,4 +15,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^post/', post),
     url(r'^candidates', get_candidates),
+    url(r'^$', default_view),
+    url(r'^((?!static\/vote).)*$', default_view),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

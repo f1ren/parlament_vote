@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
@@ -62,6 +63,9 @@ def get_current_jobs(wks):
 	jobs = [c.value for c in wks.range(JOBS_RANGE)]
 	jobs = [c for c in jobs if c != '']
 	return jobs
+
+def default_view(request, args):
+	return redirect('/static/vote/vote.html')
 
 def get_worksheet():
 	gc = gspread.login('parlament.voter', '*&^%!@#$')

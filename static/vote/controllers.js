@@ -1,4 +1,6 @@
-voteModule.controller('voteController', ['$scope', '$http', function($scope, $http) {
+voteModule.controller('voteController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+    $scope.sending = false;
+    $scope.sent = false;
     $scope.jobs = [
         "ראש הממשלה",
         "שר האוצר",
@@ -21,28 +23,48 @@ voteModule.controller('voteController', ['$scope', '$http', function($scope, $ht
         "מבקר המדינה",
         ];
     
-    $scope.vote = {};
-    $scope.jobs.forEach(function(job) {
-    	$scope.vote[job] = [''];
-    });
-    $scope.persons = [
-    	"בוז'י הרצוג",
-    ];
+    var givenVote = $location.search().vote;
+    if (angular.isDefined(givenVote)) {
+        $scope.vote = angular.fromJson(givenVote);
+    } else {
+        $scope.vote = {};
+        $scope.jobs.forEach(function(job) {
+            $scope.vote[job] = [{name: ''}];
+        });
+    }
+    
+    $scope.candidates = [];
+    $http.get("/candidates/", $scope.vote).
+        success(function(data, status, headers, config) {
+            data.forEach(function(candidate) {
+                $scope.candidates.push(candidate);
+            });
+        }).
+        error(function(data, status, headers, config) {
+        });
 
     $scope.addCandidate = function(candidates) {
-    	if (candidates.length < 3) candidates.push('');
+    	if (candidates.length >= 3) return;
+        if (candidates.indexOf({name: ''}) > -1) return;
+        candidates.push({name: ''});
     };
 
 	$scope.removeCandidate = function(candidates) {
-    	if (candidates.length > 1) candidates.pop();
+    	if (candidates.length <= 1) return;
+        candidates.pop();
     };
 
     $scope.send = function() {
-        $http.post("http://127.0.0.1:8000/post/", $scope.vote).
+        $scope.sending = true;
+        $scope.shareLink = '#/?vote=' + angular.toJson($scope.vote);
+        $http.post("/post/", $scope.vote).
         success(function(data, status, headers, config) {
-            console.log(data);
+            $scope.sending = false;
+            $scope.sent = true;
         }).
         error(function(data, status, headers, config) {
+            $scope.sending = false;
+            $scope.sent = true;
         });
     }
 }]);

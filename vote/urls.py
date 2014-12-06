@@ -14,4 +14,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^post/', post),
+    url(r'^candidates', get_candidates),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

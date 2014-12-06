@@ -1,1 +1,1 @@
-var voteModule = angular.module('voteModule', ['ui.bootstrap']);
+var voteModule = angular.module('voteModule', ['ui.bootstrap', 'ngRoute', 'angulike']);

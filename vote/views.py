@@ -64,7 +64,7 @@ def get_current_jobs(wks):
 	jobs = [c for c in jobs if c != '']
 	return jobs
 
-def default_view(request, args):
+def default_view(request, args=None):
 	return redirect('/static/vote/vote.html')
 
 def get_worksheet():

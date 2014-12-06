@@ -1,0 +1,43 @@
+<html ng-app="voteModule">
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body ng-controller="voteController" dir=rtl>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <h1>הממשלה שלי</h1>
+            </div>
+            <form class="form-horizontal" role="form">
+                <div class="row-fluid">
+                  <div class="form-group" ng-repeat="job in jobs">
+                    <label for="input{{ $index }}" class="col-sm-2 control-label">{{ job }}</label>
+                      <div class="col-sm-2" ng-repeat="candidate in vote[job] track by $index">
+                        <input size=20 type="text" ng-model="candidate" typeahead="person for person in persons | filter:$viewValue | limitTo:8" class="form-control" id="input{{ $index }}" placeholder="עדיפות {{ $index + 1 }}">
+                      </div>
+                      <div class="col-sm-1">
+                        <button ng-click="addCandidate(vote[job])" ng-if="vote[job].length < 3" class="btn btn-default">+</button>
+                        <button ng-click="removeCandidate(vote[job])" ng-if="vote[job].length > 1" class="btn btn-default">-</button>
+                      </div>
+                  </div>
+                    <div class="row">
+                        <div class="col-sm-5" align="left">
+                            <button ng-click="send()" class="btn btn-danger">שלח</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.2.0-rc2/css/bootstrap-rtl.min.css">
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap.js"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="module.js"></script>
+    <script src="controllers.js"></script>
+</html>

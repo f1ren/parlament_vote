@@ -1,0 +1,1 @@
+var voteModule = angular.module('voteModule', ['ui.bootstrap']);
